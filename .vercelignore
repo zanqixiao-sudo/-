@@ -1,0 +1,12 @@
+src/
+data/
+output/
+logs/
+CLIProxyAPI/
+.wrangler/
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+DEPLOY-CLOUDFLARE.md
+scripts/start-normal-lan.cmd
