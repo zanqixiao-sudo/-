@@ -14,11 +14,16 @@
     "prefetch:offline:edge": "node src/scrapers/jzsc-offline.js --headed",
     "prefetch:offline:manual": "node src/scrapers/jzsc-offline.js --headed --manual-keepalive --failed-only",
     "worker:offline": "node src/offline-worker.js",
-    "export:offline:xlsx": "node src/export-offline-xlsx.js"
+    "export:offline:xlsx": "node src/export-offline-xlsx.js",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "dependencies": {
     "express": "^4.21.2",
     "playwright": "^1.54.2",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "wrangler": "^4.84.0"
   }
 }
