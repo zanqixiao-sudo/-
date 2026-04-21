@@ -16,3 +16,10 @@ data/edge-session-manual/
 !public/data/offline-cache.json
 !public/downloads/
 !public/downloads/勘察企业离线总库.xlsx
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
