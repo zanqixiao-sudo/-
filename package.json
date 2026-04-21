@@ -1,0 +1,24 @@
+{
+  "name": "bid-helper",
+  "version": "1.0.0",
+  "description": "住建部四库一平台勘察企业离线抓取与查询工具",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "build:pages": "node scripts/prepare-cloudflare-pages.js",
+    "sync:static": "node scripts/sync-static-assets.js",
+    "preview:start": "set HOST=0.0.0.0&&set PORT=3210&&set PREVIEW_MODE=1&&set PREVIEW_ACCESS_PASSWORD=666666&&set OFFLINE_WORKER_DISABLED=1&&node src/server.js",
+    "scrape": "node src/scrapers/jzsc.js",
+    "scrape:headed": "node src/scrapers/jzsc.js --headed",
+    "prefetch:offline": "node src/scrapers/jzsc-offline.js",
+    "prefetch:offline:edge": "node src/scrapers/jzsc-offline.js --headed",
+    "prefetch:offline:manual": "node src/scrapers/jzsc-offline.js --headed --manual-keepalive --failed-only",
+    "worker:offline": "node src/offline-worker.js",
+    "export:offline:xlsx": "node src/export-offline-xlsx.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "playwright": "^1.54.2",
+    "xlsx": "^0.18.5"
+  }
+}

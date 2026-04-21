@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>勘察企业资质查询与下载</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">工程维管中心 · 内部使用</p>
+          <h1>勘察企业资质查询与下载</h1>
+          <p class="hero-text">
+            这个工具用于内部招投标辅助查询。你可以先下载离线总表整体查看企业资质数据，
+            也可以按多个资质做交集筛选，快速定位同时具备这些资质的企业，并导出当前结果表。
+          </p>
+          <div class="hero-tags">
+            <span class="hero-tag">适合投标前摸排</span>
+            <span class="hero-tag">支持多资质交集筛选</span>
+            <span class="hero-tag">支持 Excel 下载</span>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <a id="excel-link" class="button button-primary hidden" href="#" download>下载离线总表</a>
+          <button id="export-button" class="button button-secondary" type="button">下载当前筛选表</button>
+          <button id="refresh-status" class="button button-ghost" type="button">刷新数据状态</button>
+          <button id="logout-button" class="button button-ghost hidden" type="button">退出预览登录</button>
+        </div>
+      </header>
+
+      <section class="intro-grid">
+        <article class="intro-card intro-card-highlight">
+          <p class="section-tag">工具用途</p>
+          <h2>用于招投标辅助判断和企业资质摸排</h2>
+          <p>
+            可先下载离线总表快速掌握企业底库，再按多个资质做交集筛选，
+            得到更贴近招投标辅助分析场景的企业结果。
+          </p>
+        </article>
+
+        <article class="intro-card">
+          <p class="section-tag">重点下载</p>
+          <h2>总表和筛选表最常用</h2>
+          <ul class="plain-list">
+            <li><strong>离线总表：</strong>适合整体查看当前本地库已整理的企业与资质数据。</li>
+            <li><strong>当前筛选表：</strong>适合把本次命中的企业名单导出留档。</li>
+          </ul>
+        </article>
+
+        <article class="intro-card intro-card-highlight">
+          <p class="section-tag">更新策略</p>
+          <h2>资质按周更新与月更新区分维护</h2>
+          <p>
+            周更新资质按周频优先补库，其余资质保留月频滚动更新，
+            页面查询与下载始终以本地离线库为准。
+          </p>
+        </article>
+
+        <article class="intro-card intro-card-warning">
+          <p class="section-tag">参考说明</p>
+          <h2>结果仅供内部辅助参考</h2>
+          <p>
+            当前数据基于公开网站信息整理生成，供工程维管中心内部招投标辅助使用。
+            正式使用关键结果前，建议结合官方公示页面再次复核。
+          </p>
+        </article>
+      </section>
+
+      <section class="guide-panel">
+        <div class="guide-header">
+          <div>
+            <p class="section-tag">使用方法</p>
+            <h2>三步完成查询与下载</h2>
+          </div>
+          <div class="guide-tip">
+            共享或预览场景下，页面主要用于查询与下载。顶部状态区会展示最近更新时间，方便快速判断本地数据是否已更新。
+          </div>
+        </div>
+
+        <div class="guide-steps">
+          <article class="guide-step">
+            <span class="step-no">1</span>
+            <strong>先看总表</strong>
+            <p>点击“下载离线总表”，先整体了解当前本地库已整理的勘察企业和资质数据。</p>
+          </article>
+          <article class="guide-step">
+            <span class="step-no">2</span>
+            <strong>再做交集筛选</strong>
+            <p>在左侧勾选一个或多个资质，可先按资质名搜索，再查询共同拥有这些资质的企业。</p>
+          </article>
+          <article class="guide-step">
+            <span class="step-no">3</span>
+            <strong>导出筛选结果</strong>
+            <p>点击“下载当前筛选表”，把本次命中的企业结果导出为 Excel，便于内部分析和留档。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="summary-grid">
+        <article class="summary-card summary-card-progress">
+          <span class="summary-label">数据状态</span>
+          <strong id="progress-status">加载中...</strong>
+          <p id="progress-detail" class="summary-detail">正在读取本地数据状态。</p>
+          <div class="mini-progress">
+            <div id="progress-bar" class="mini-progress-bar"></div>
+          </div>
+          <p id="progress-note" class="summary-note">等待更新...</p>
+          <div class="mini-progress mini-progress-secondary">
+            <div id="qualification-progress-bar" class="mini-progress-bar mini-progress-bar-secondary"></div>
+          </div>
+          <p id="qualification-progress-note" class="summary-note">等待当前资质进度...</p>
+        </article>
+
+        <article class="summary-card">
+          <span class="summary-label">离线总表状态</span>
+          <strong id="library-status">加载中...</strong>
+          <p id="library-detail" class="summary-detail">正在读取本地离线库信息。</p>
+        </article>
+
+        <article class="summary-card">
+          <span class="summary-label">离线库概览</span>
+          <strong><span id="company-count">-</span> 家企业</strong>
+          <p class="summary-detail">
+            已整理资质 <span id="fetched-count">-</span> 项，当前本地库可直接查询与下载。
+          </p>
+        </article>
+
+        <article class="summary-card summary-card-soft">
+          <span class="summary-label">更新策略</span>
+          <strong>周更新资质优先维护，其余资质按月更新</strong>
+          <p class="summary-detail">页面查询和下载统一基于本地离线库，适合日常辅助筛选使用。</p>
+        </article>
+      </section>
+
+      <main class="content-grid">
+        <aside class="sidebar">
+          <div class="panel-head">
+            <div>
+              <h2>资质筛选区</h2>
+              <p class="panel-note">资质按周更新与月更新区分维护，选择任意多个资质可查询共同拥有这些资质的企业</p>
+            </div>
+            <div class="panel-actions">
+              <button id="clear-selection" class="text-button" type="button">一键清空</button>
+              <span id="qualification-total" class="panel-badge">加载中...</span>
+            </div>
+          </div>
+
+          <div class="priority-note">
+            <strong>更新说明：</strong>
+            周更新资质按周频优先维护；其余资质按月频滚动更新。
+          </div>
+
+          <label class="search-box">
+            <span>按资质名称搜索</span>
+            <input id="qualification-filter" type="search" placeholder="例如：岩土工程专业甲级" />
+          </label>
+
+          <div id="selected-summary" class="selected-summary">尚未选择资质</div>
+          <div id="qualification-list" class="qualification-list"></div>
+        </aside>
+
+        <section class="main-panel">
+          <div class="panel-head panel-head-stack">
+            <div>
+              <h2>筛选结果区</h2>
+              <p class="panel-note">支持按企业名称、统一社会信用代码、地区、法人等关键词进一步筛选</p>
+            </div>
+            <div class="query-bar">
+              <input
+                id="keyword-input"
+                type="search"
+                placeholder="输入企业名称、统一社会信用代码、地区或法人"
+              />
+              <button id="query-button" class="button button-primary" type="button">查询共同企业</button>
+            </div>
+          </div>
+
+          <div id="message-box" class="message-box">
+            先在左侧选择一个或多个资质，再点击“查询共同企业”。如需留档，查询后可直接下载当前筛选表。
+          </div>
+
+          <div class="download-strip">
+            <div class="download-card">
+              <span class="meta-label">总表下载</span>
+              <strong>离线总表</strong>
+              <p>适合先整体浏览本地库中的企业与资质数据。</p>
+            </div>
+            <div class="download-card">
+              <span class="meta-label">结果下载</span>
+              <strong>当前筛选表</strong>
+              <p>适合把当前筛选命中的企业导出为 Excel。</p>
+            </div>
+          </div>
+
+          <div class="result-meta">
+            <div class="result-chip">
+              <span class="meta-label">命中企业</span>
+              <strong id="result-count">0</strong>
+            </div>
+            <div class="result-chip">
+              <span class="meta-label">已选资质</span>
+              <strong id="selected-count">0</strong>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>企业名称</th>
+                  <th>统一社会信用代码</th>
+                  <th>法人</th>
+                  <th>地区</th>
+                  <th>拥有资质</th>
+                </tr>
+              </thead>
+              <tbody id="result-body">
+                <tr>
+                  <td colspan="5" class="empty-row">等待查询</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

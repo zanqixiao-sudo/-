@@ -1,0 +1,18 @@
+node_modules/
+logs/
+CLIProxyAPI/
+
+# Local crawler runtime data
+data/**
+output/spreadsheet/*.xlsx
+console.log(t.slice(0
+
+# Browser session profiles
+data/edge-session/
+data/edge-session-manual/
+
+# Keep deployable static assets tracked
+!public/data/
+!public/data/offline-cache.json
+!public/downloads/
+!public/downloads/勘察企业离线总库.xlsx
