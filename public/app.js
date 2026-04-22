@@ -196,15 +196,15 @@ function filterCompaniesLocal(cache, qualificationCodes, keyword) {
 
 function buildExportRows(companies) {
   return companies.map((company) => ({
-    企业名称: company.companyName,
-    统一社会信用代码: company.unifiedCode,
-    法人: company.legalRepresentative,
-    省份: company.province,
-    城市: company.city,
-    区域: company.regionName,
-    资质数量: (company.qualificationCodes || []).length,
-    资质编码: (company.qualificationCodes || []).join("；"),
-    资质名称: (company.qualificationNames || []).join("；"),
+    company_name: company.companyName,
+    credit_code: company.unifiedCode,
+    legal_representative: company.legalRepresentative,
+    province: company.province,
+    city: company.city,
+    region: company.regionName,
+    qualification_count: (company.qualificationCodes || []).length,
+    qualification_codes: (company.qualificationCodes || []).join("; "),
+    qualification_names: (company.qualificationNames || []).join("; "),
   }));
 }
 
@@ -515,14 +515,15 @@ function exportCurrentResultsStatic() {
   }
 
   const keyword = elements.keywordInput.value.trim();
-  const rows = buildExportRows(state.lastQueryResults);
+  const fullResults = filterCompaniesLocal(state.cache, selected, keyword);
+  const rows = buildExportRows(fullResults);
   const exportRows = rows.length
     ? rows
     : [
         {
-          说明: "当前筛选条件下没有匹配企业",
-          关键词: keyword || "无",
-          资质编码: selected.join("；") || "无",
+          note: "当前筛选条件下没有匹配企业",
+          keyword: keyword || "none",
+          qualification_codes: selected.join("; ") || "none",
         },
       ];
 
@@ -531,15 +532,15 @@ function exportCurrentResultsStatic() {
     const worksheet = window.XLSX.utils.json_to_sheet(exportRows);
     const metaSheet = window.XLSX.utils.json_to_sheet([
       {
-        导出时间: new Date().toLocaleString("zh-CN"),
-        关键词: keyword || "无",
-        资质编码: selected.join("；") || "无",
-        命中企业数: state.lastQueryResults.length,
+        exported_at: new Date().toLocaleString("zh-CN"),
+        keyword: keyword || "none",
+        qualification_codes: selected.join("; ") || "none",
+        matched_companies: fullResults.length,
       },
     ]);
-    window.XLSX.utils.book_append_sheet(workbook, worksheet, "筛选结果");
-    window.XLSX.utils.book_append_sheet(workbook, metaSheet, "导出说明");
-    const filename = `筛选结果-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.xlsx`;
+    window.XLSX.utils.book_append_sheet(workbook, worksheet, "results");
+    window.XLSX.utils.book_append_sheet(workbook, metaSheet, "meta");
+    const filename = `current-results-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.xlsx`;
     window.XLSX.writeFile(workbook, filename);
   } else {
     const header = Object.keys(exportRows[0]);
@@ -555,7 +556,7 @@ function exportCurrentResultsStatic() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `筛选结果-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.csv`;
+    link.download = `current-results-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   }
